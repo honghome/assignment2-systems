@@ -63,3 +63,30 @@ To submit, run `./test_and_make_submission.sh` . This script will install your
 code's dependencies, run tests, and create a gzipped tarball with the output. We
 should be able to unzip your submitted tarball and run
 `./test_and_make_submission.sh` to verify your test results.
+
+## Benchmarking And Profiling
+
+Run the benchmark from the repository root. This short CPU run checks the CLI;
+GPU performance measurements require a compatible GPU and PyTorch installation:
+
+```sh
+uv run python -m cs336_systems.benchmarking --size small --mode forward --device cpu --batch-size 1 --context-length 8 --warmup-steps 0 --measurement-steps 1
+```
+
+For GPU measurements, use `--device cuda:0`, select `--mode forward`,
+`forward-backward`, or `train-step`, and set warmup and measurement counts.
+`--dtype float16` or `bfloat16` enables GPU autocast where supported; model
+parameters remain FP32. PyTorch on ROCm also uses the `cuda:0` device name.
+
+- `--enable-nvtx` adds annotations for NVIDIA Nsight Systems.
+- `--memory-snapshot-file outputs/memory_snapshot.pickle` records GPU memory
+  history after warmup. Multi-case runs append the model size and mode to the filename.
+- `--output-format` supports Markdown, CSV, LaTeX, and Typst.
+- `--output-file` writes the results to a file; create its parent directory first.
+
+[ToyModel dtype inspection](cs336_systems/mixed_precision_toy.py) and
+[GPU memory snapshot smoke testing](cs336_systems/mi300_memory_smoke.py) are
+standalone scripts; use `--help` for their options. The
+[experiment report](docs/benchmark_experiments.md) records results, limitations,
+and autograd/checkpointing notes. These tools do not implement the remaining
+FlashAttention or distributed-training assignment tasks.

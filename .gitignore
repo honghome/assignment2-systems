@@ -2,6 +2,17 @@
 cs336-spring2024-assignment-2-submission.zip
 test_results.xml
 
+# Local company resources and generated experiment artifacts
+/cs336_systems/aml/
+/.aml_staging/
+/aml_downloads/
+/outputs/
+/cs336_systems/systems.ipynb
+*.pickle
+*.nsys-rep
+*.qdrep
+*.nsys-workstation
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
